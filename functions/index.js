@@ -14,7 +14,16 @@ exports.collectUserInfo = functions.https.onRequest((req, res) => {
 		loggedIn: Date.now(),
 		userAgent: userAgent
 	});
+
 	res.status(200).json({
 		message: "collected"
 	});
 });
+
+exports.getUserInfo = functions.https.onRequest((req, res) => {
+	admin.database().ref('users').on('value', function(snapshot) {
+		res.status(200).json({
+			message: snapshot.val()
+		});
+	});
+})
